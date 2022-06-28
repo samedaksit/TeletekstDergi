@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/categoriesFragment">
+
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.example.teletekstdergi.view.CategoriesFragment"
+        android:label="CategoriesFragment" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_articlesFragment"
+            app:destination="@id/articlesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articlesFragment"
+        android:name="com.example.teletekstdergi.view.ArticlesFragment"
+        android:label="ArticlesFragment" >
+        <action
+            android:id="@+id/action_articlesFragment_to_articleContentFragment"
+            app:destination="@id/articleContentFragment" />
+        <action
+            android:id="@+id/action_articlesFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+        <argument
+            android:name="CategoryId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleContentFragment"
+        android:name="com.example.teletekstdergi.view.ArticleContentFragment"
+        android:label="ArticleContentFragment" >
+        <action
+            android:id="@+id/action_articleContentFragment_to_articlesFragment"
+            app:destination="@id/articlesFragment" />
+        <argument
+            android:name="ArticleId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
+</navigation>
