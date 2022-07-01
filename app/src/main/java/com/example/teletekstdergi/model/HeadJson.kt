@@ -1,6 +1,5 @@
 package com.example.teletekstdergi.model
 
-import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
 
@@ -9,11 +8,13 @@ data class HeadJson(
     val title: String?,
     @SerializedName("og_description")
     val description: String?,
-    @SerializedName("twitter_misc")
-    val author: Author?,
     @SerializedName("og_image")
-    val Image: OgImage?
-)
+    val image: List<OgImage>?,
+    @SerializedName("twitter_misc")
+    val author: Author?
+) {
+    val url = image?.first()?.imageUrl
+}
 
 
 data class Author(
@@ -21,8 +22,13 @@ data class Author(
     val author: String?
 )
 
-@Entity
+
 data class OgImage(
     @SerializedName("url")
     val imageUrl: String?
+)
+
+data class Content(
+    @SerializedName("rendered")
+    val rendered: String?
 )

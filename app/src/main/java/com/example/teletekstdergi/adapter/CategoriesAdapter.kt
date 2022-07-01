@@ -1,6 +1,7 @@
 package com.example.teletekstdergi.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -8,11 +9,23 @@ import com.example.teletekstdergi.R
 import com.example.teletekstdergi.databinding.ItemCategoryBinding
 import com.example.teletekstdergi.model.Category
 
-class CategoriesAdapter(private val categoryList: ArrayList<Category>) :
+class CategoriesAdapter(
+    private val categoryList: ArrayList<Category>,
+    val listener: OnItemClickListener
+) :
     RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {
 
-    class CategoriesViewHolder(var view: ItemCategoryBinding) : RecyclerView.ViewHolder(view.root) {
+    inner class CategoriesViewHolder(var view: ItemCategoryBinding) :
+        RecyclerView.ViewHolder(view.root), View.OnClickListener {
 
+        init {
+            view.root.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            categoryList[position].categoryId?.let { listener.onItemClick(it) }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
@@ -36,8 +49,14 @@ class CategoriesAdapter(private val categoryList: ArrayList<Category>) :
 
     fun updateCountryList(newList: List<Category>) {
         categoryList.clear()
-        categoryList.addAll(newList)
+        val sortedList = newList.sortedBy { q -> q.categoryId }
+        categoryList.addAll(sortedList)
         notifyDataSetChanged()
 
     }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
 }

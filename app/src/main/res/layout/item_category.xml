@@ -6,11 +6,20 @@
         <variable
             name="category"
             type="com.example.teletekstdergi.model.Category" />
+
     </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/categoryId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(category.categoryId)}"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/categoryName"
