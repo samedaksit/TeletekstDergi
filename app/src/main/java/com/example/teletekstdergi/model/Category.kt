@@ -10,5 +10,6 @@ data class Category(
     @SerializedName("id")
     val categoryId: Int?,
     @SerializedName("name")
-    val categoryName: String?
+    val categoryName: String?,
+    var isClicked: Boolean = false
 )

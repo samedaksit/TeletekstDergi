@@ -1,6 +1,9 @@
 package com.example.teletekstdergi.util
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.view.View
+import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -8,7 +11,6 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.teletekstdergi.R
-import retrofit2.Retrofit
 
 fun ImageView.downloadFromUrl(url: String?, progressDrawable: CircularProgressDrawable) {
     val options = RequestOptions()
@@ -42,4 +44,27 @@ fun formatDate(view: TextView, text: String?) {
 @BindingAdapter("android:formatted_title")
 fun formatTitle(view: TextView, text: String?) {
     view.text = text?.substringBefore("*")?.uppercase()
+}
+
+@SuppressLint("SetJavaScriptEnabled")
+@BindingAdapter("android:load_url")
+fun getWebView(view: WebView, url: String?) {
+
+    view.settings.javaScriptEnabled = true
+    view.settings.useWideViewPort = true
+    view.settings.loadWithOverviewMode = true
+    view.settings.setSupportZoom(true)
+    view.settings.builtInZoomControls = true
+    view.settings.displayZoomControls = false
+    view.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+    view.settings.defaultFontSize = 40
+    view.settings.defaultTextEncodingName = "utf-8"
+
+    view.loadDataWithBaseURL(
+        null,
+        "<html><body>$url</body></html>",
+        "text/html",
+        "UTF-8",
+        null
+    )
 }

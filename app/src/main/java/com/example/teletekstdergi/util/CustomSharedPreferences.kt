@@ -10,6 +10,7 @@ class CustomSharedPreferences {
     companion object {
         private const val CATEGORIES_LOADED_FROM_API = "are_categories_loaded_from_api"
         private const val ARTICLES_LOADED_FROM_API = "are_articles_loaded_from_api"
+
         private var sharedPreferences: SharedPreferences? = null
 
         @Volatile

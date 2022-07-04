@@ -7,36 +7,51 @@
         <variable
             name="article"
             type="com.example.teletekstdergi.model.Article" />
+
         <variable
             name="image"
             type="java.lang.String" />
+
+        <variable
+            name="listener"
+            type="com.example.teletekstdergi.adapter.ArticlesClickListener" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="8dp"
+        android:layout_height="@dimen/height_in_pixels_articles"
+        android:layout_margin="@dimen/default_margin"
+        android:background="@color/white"
+        android:onClick="@{listener::onArticleClicked}"
         android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/articleId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(article.articleId)}"
+            android:visibility="gone" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/articleCardView"
-            android:layout_width="120dp"
-            android:layout_height="100dp"
-            app:cardCornerRadius="24dp">
+            android:layout_width="@dimen/article_card_width"
+            android:layout_height="@dimen/height_in_pixels_articles"
+            app:cardCornerRadius="@dimen/article_card_corner_radius">
 
             <ImageView
                 android:id="@+id/articleImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:download_url="@{image}"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:contentDescription="@string/article_image" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:padding="@dimen/default_padding">
 
             <TextView
                 android:id="@+id/articleTitle"
@@ -44,35 +59,36 @@
                 android:layout_height="wrap_content"
                 android:formatted_title="@{article.headJson.title}"
                 android:textAlignment="textStart"
-                android:textSize="16sp"
+                android:textSize="@dimen/article_title_text_size"
                 android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/half_margin"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/articleAuthor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginEnd="@dimen/half_margin"
                     android:text="@{article.headJson.author.author}"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/about_article_text_size" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:text="/"
-                    android:textSize="12sp"/>
+                    android:layout_marginEnd="@dimen/half_margin"
+                    android:text="@string/slash"
+                    android:textSize="@dimen/about_article_text_size" />
 
                 <TextView
                     android:id="@+id/articleDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:formatted_date="@{article.articleDate}"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/about_article_text_size" />
 
             </LinearLayout>
 

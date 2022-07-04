@@ -30,7 +30,5 @@ abstract class CategoriesDatabase : RoomDatabase() {
         private fun makeDatabase(context: Context) = Room.databaseBuilder(
             context.applicationContext, CategoriesDatabase::class.java, "categoriesDatabase"
         ).build()
-
     }
-
 }

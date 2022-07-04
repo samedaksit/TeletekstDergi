@@ -1,7 +1,6 @@
 package com.example.teletekstdergi.viewmodel
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.teletekstdergi.model.*
 import com.example.teletekstdergi.service.ArticlesAPIService
@@ -24,6 +23,8 @@ class CategoriesViewModel(application: Application) : BaseViewModel(application)
 
     val categories = MutableLiveData<List<Category>>()
     val articles = MutableLiveData<List<Article>>()
+    val isArticleExists = MutableLiveData<Boolean>()
+    val articleLoading = MutableLiveData<Boolean>()
 
     fun getCategories() {
         val isLoaded = customPreferences.checkIfCategoriesLoadedFromAPI()
@@ -61,15 +62,16 @@ class CategoriesViewModel(application: Application) : BaseViewModel(application)
     }
 
     fun getArticles(categoryId: Int) {
+
+        articleLoading.value = true
+
         val isLoaded = customPreferences.checkIfArticlesLoadedFromAPI()
+
         if (isLoaded == true) {
             getArticlesFromSqlite(categoryId)
-            Toast.makeText(getApplication(), "Data refreshed from SQLite", Toast.LENGTH_LONG).show()
         } else {
             getArticlesFromAPI(categoryId)
-            Toast.makeText(getApplication(), "Data refreshed from API", Toast.LENGTH_LONG).show()
         }
-
     }
 
     fun refreshArticles(categoryId: Int) {
@@ -77,6 +79,7 @@ class CategoriesViewModel(application: Application) : BaseViewModel(application)
     }
 
     private fun getArticlesFromSqlite(categoryId: Int) {
+
         when (categoryId) {
             1 -> {
                 launch {
@@ -154,8 +157,8 @@ class CategoriesViewModel(application: Application) : BaseViewModel(application)
     }
 
     private fun getArticlesFromAPI(selectedCategory: Int) {
-        disposable.addAll(
 
+        disposable.addAll(
             articlesAPIService.getPoem()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -384,7 +387,13 @@ class CategoriesViewModel(application: Application) : BaseViewModel(application)
     }
 
     private fun showArticles(articleList: List<Article>) {
-        articles.value = articleList
+        if (articleList.isEmpty()) {
+            isArticleExists.value = false
+        } else {
+            isArticleExists.value = true
+            articles.value = articleList
+        }
+        articleLoading.value = false
     }
 
     override fun onCleared() {

@@ -5,6 +5,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+data class ArticleContent(
+    val articleDate: String?,
+    val articleAuthor: String?,
+    val articleCategory: String?,
+    val articleTitle: String,
+    val articleImage: String,
+    val articleContent: String
+)
 
 data class Article(
     val articleId: Int?,
@@ -12,6 +20,7 @@ data class Article(
     val headJson: HeadJson?,
     val content: Content?
 )
+
 
 @Entity(tableName = "Poems")
 data class Poem(

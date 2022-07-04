@@ -20,5 +20,12 @@
             android:name="ArticleId"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_articleContentFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+        <argument
+            android:name="categoryId"
+            app:argType="integer"
+            android:defaultValue="1" />
     </fragment>
 </navigation>

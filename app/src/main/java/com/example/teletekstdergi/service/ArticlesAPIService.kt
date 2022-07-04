@@ -2,7 +2,6 @@ package com.example.teletekstdergi.service
 
 import com.example.teletekstdergi.model.*
 import com.example.teletekstdergi.model.Constants.BASE_URL
-import io.reactivex.Flowable
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory

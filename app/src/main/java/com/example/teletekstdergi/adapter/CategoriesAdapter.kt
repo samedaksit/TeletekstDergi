@@ -12,8 +12,7 @@ import com.example.teletekstdergi.model.Category
 class CategoriesAdapter(
     private val categoryList: ArrayList<Category>,
     val listener: OnItemClickListener
-) :
-    RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {
+) : RecyclerView.Adapter<CategoriesAdapter.CategoriesViewHolder>() {
 
     inner class CategoriesViewHolder(var view: ItemCategoryBinding) :
         RecyclerView.ViewHolder(view.root), View.OnClickListener {
@@ -25,6 +24,11 @@ class CategoriesAdapter(
         override fun onClick(v: View?) {
             val position = adapterPosition
             categoryList[position].categoryId?.let { listener.onItemClick(it) }
+            categoryList.forEach {
+                it.isClicked = false
+            }
+            categoryList[position].isClicked = true
+            notifyDataSetChanged()
         }
     }
 
@@ -52,7 +56,6 @@ class CategoriesAdapter(
         val sortedList = newList.sortedBy { q -> q.categoryId }
         categoryList.addAll(sortedList)
         notifyDataSetChanged()
-
     }
 
     interface OnItemClickListener {

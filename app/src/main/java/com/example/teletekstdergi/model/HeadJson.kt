@@ -12,9 +12,7 @@ data class HeadJson(
     val image: List<OgImage>?,
     @SerializedName("twitter_misc")
     val author: Author?
-) {
-    val url = image?.first()?.imageUrl
-}
+)
 
 
 data class Author(

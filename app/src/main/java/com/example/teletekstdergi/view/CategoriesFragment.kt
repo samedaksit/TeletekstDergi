@@ -5,11 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.teletekstdergi.R
 import com.example.teletekstdergi.adapter.ArticlesAdapter
 import com.example.teletekstdergi.adapter.CategoriesAdapter
 import com.example.teletekstdergi.databinding.FragmentCategoryBinding
+import com.example.teletekstdergi.util.CustomArticleDividerItemDecoration
+import com.example.teletekstdergi.util.CustomCategoryDividerItemDecoration
 import com.example.teletekstdergi.viewmodel.CategoriesViewModel
 
 
@@ -24,6 +27,11 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
 
     private var selectedCategory = 1
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setViewModel()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,17 +42,25 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dataBinding.fragmentCategoryToolbar.title = "Teletekst Dergi"
 
-        categoriesViewModel = ViewModelProvider(this).get(CategoriesViewModel::class.java)
-        categoriesViewModel.getCategories()
-        categoriesViewModel.refreshArticles(1)
-
+        setArticlesRecyclerView()
+        setCategoriesRecyclerView()
         setAdapters()
         setSwipeRefresh()
 
         observeCategories()
+
+        observeIfArticleExists()
+        observeArticleLoading()
         observeArticles()
 
+    }
+
+    private fun setViewModel() {
+        categoriesViewModel = ViewModelProvider(this)[CategoriesViewModel::class.java]
+        categoriesViewModel.getCategories()
+        categoriesViewModel.refreshArticles(1)
     }
 
     private fun setSwipeRefresh() {
@@ -52,7 +68,34 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
             categoriesViewModel.refreshArticles(selectedCategory)
             dataBinding.swipeRefresher.isRefreshing = false
         }
+    }
 
+    private fun setCategoriesRecyclerView() {
+        val widthInPixels = resources.getDimensionPixelSize(R.dimen.list_item_divider_width)
+        context?.let {
+            dataBinding.categoriesRV.addItemDecoration(
+                CustomCategoryDividerItemDecoration(
+                    ContextCompat.getColor(
+                        it, R.color.category_divider_color
+                    ),
+                    widthInPixels
+                )
+            )
+        }
+    }
+
+    private fun setArticlesRecyclerView() {
+        val heightInPixels = resources.getDimensionPixelSize(R.dimen.list_item_divider_height)
+        context?.let {
+            dataBinding.articlesRV.addItemDecoration(
+                CustomArticleDividerItemDecoration(
+                    ContextCompat.getColor(
+                        it, R.color.black
+                    ),
+                    heightInPixels
+                )
+            )
+        }
     }
 
     private fun setAdapters() {
@@ -68,17 +111,48 @@ class CategoriesFragment : Fragment(), CategoriesAdapter.OnItemClickListener {
         }
     }
 
+    private fun observeIfArticleExists() {
+        categoriesViewModel.isArticleExists.observe(viewLifecycleOwner) { content ->
+            content?.let {
+                if (content) {
+                    dataBinding.articlesRV.visibility = View.VISIBLE
+                    dataBinding.noContentText.visibility = View.GONE
+                } else {
+                    dataBinding.noContentText.visibility = View.VISIBLE
+                    dataBinding.articlesRV.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun observeArticleLoading() {
+        categoriesViewModel.articleLoading.observe(viewLifecycleOwner) { loading ->
+            loading?.let {
+                if (loading) {
+                    dataBinding.articleLoading.visibility = View.VISIBLE
+                    dataBinding.noContentText.visibility = View.GONE
+                    dataBinding.articlesRV.visibility = View.GONE
+                } else {
+                    dataBinding.articleLoading.visibility = View.GONE
+                }
+            }
+        }
+    }
+
     private fun observeArticles() {
         categoriesViewModel.articles.observe(viewLifecycleOwner) { articles ->
             articles?.let {
                 articlesAdapter.updateArticleList(articles)
+                dataBinding.articlesRV.scrollToPosition(0)
             }
         }
     }
 
     override fun onItemClick(position: Int) {
-        categoriesViewModel.getArticles(position)
-        selectedCategory = position
+        if (position!=selectedCategory){
+            categoriesViewModel.getArticles(position)
+            selectedCategory = position
+        }
+        articlesAdapter.setCategoryId(selectedCategory)
     }
-
 }
