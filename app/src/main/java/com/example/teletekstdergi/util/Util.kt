@@ -15,7 +15,7 @@ import com.example.teletekstdergi.R
 fun ImageView.downloadFromUrl(url: String?, progressDrawable: CircularProgressDrawable) {
     val options = RequestOptions()
         .placeholder(progressDrawable)
-        .error(R.mipmap.ic_launcher_round)
+        .error(R.drawable.teletekst_1024_500)
 
     Glide.with(context)
         .setDefaultRequestOptions(options)

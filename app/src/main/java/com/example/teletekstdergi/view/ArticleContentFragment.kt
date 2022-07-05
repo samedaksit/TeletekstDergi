@@ -5,13 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toolbar
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.teletekstdergi.R
 import com.example.teletekstdergi.databinding.FragmentArticleContentBinding
-import com.example.teletekstdergi.util.CustomSharedPreferences
 import com.example.teletekstdergi.viewmodel.ArticleContentViewModel
 
 
